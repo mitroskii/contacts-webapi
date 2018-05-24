@@ -11,19 +11,42 @@ namespace ContactsWebApi.Services
     {
         private readonly IContactRepository _contactRepository;
 
-        public ContactService()
+        public ContactService(IContactRepository contactRepository)
         {
-
+            _contactRepository = contactRepository;
         }
 
         public List<Contact> GetContacts()
         {
-            throw new NotImplementedException();
+            return _contactRepository.Get();
         }
     
     public Contact GetContactById(int id)
         {
-            throw new NotImplementedException();
+            return _contactRepository.Get(id);
+        }
+
+        public Contact CreateContact(Contact contact)
+        {
+            return _contactRepository.Create(contact);
+        }
+
+        public Contact UpdateContact(int id, Contact contact)
+        {
+            var savedContact = _contactRepository.Get(id);
+            if(savedContact == null)
+            {
+                throw new Exception("Contact not found");
+            }
+            else
+            {
+                return _contactRepository.Update(contact);
+            }
+        }
+
+        public void DeleteContact(int id)
+        {
+            _contactRepository.Delete(id);
         }
     }
 }
